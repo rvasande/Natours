@@ -1,41 +1,44 @@
-const express = require('express');
-const tourController = require('./../controllers/tourController');
-const authController = require('./../controllers/authController');
-const reviewController = require('./../controllers/reviewController');
+const express = require("express");
+const tourController = require("./../controllers/tourController");
+const authController = require("./../controllers/authController");
+const reviewRouter = require('./../routes/reviewRoute')
 
 const router = express.Router();
 
 // router.param('id',tourController.checkId)
 
 router
-  .route('/top-5-cheap')
+  .route("/top-5-cheap")
   .get(tourController.aliasTopTours, tourController.getAllTours);
 
-router.route('/tour-stats').get(tourController.getTourStats);
+router.route("/tour-stats").get(tourController.getTourStats);
 
-router.route('/monthly-plan/:year').get(tourController.getMonthlyPlan);
+router.route("/monthly-plan/:year").get(tourController.getMonthlyPlan);
 
 router
-  .route('/')
+  .route("/")
   .get(authController.protect, tourController.getAllTours)
   .post(tourController.createTour);
 
 router
-  .route('/:id')
+  .route("/:id")
   .get(tourController.getTour)
   .patch(tourController.updateTour)
   .delete(
     authController.protect,
-    authController.restrictTo('admin', 'lead-guide'),
+    authController.restrictTo("admin", "lead-guide"),
     tourController.deleteTour
   );
 
 //nested routing
-router
-  .route('/:tourId/reviews')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    reviewController.createReview
-  );
+// router
+//   .route('/:tourId/reviews')
+//   .post(
+//     authController.protect,
+//     authController.restrictTo('user'),
+//     reviewController.createReview
+//   );
+
+router.use('/:tourId/reviews', reviewRouter)
+
 module.exports = router;
