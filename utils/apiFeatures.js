@@ -1,3 +1,5 @@
+const Tour = require('./../models/tourModel')
+
 class APIFeatures {
     constructor(query, queryString) {
       this.query = query;
@@ -58,7 +60,7 @@ class APIFeatures {
       this.query = this.query.skip(skip).limit(limit);
   
       if (this.queryString.page) {
-        const numTour = Tour.countDocuments();
+        const numTour = Tour.countDocuments();  
       }
       return this;
     }
