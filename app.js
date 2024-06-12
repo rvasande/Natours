@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -13,6 +14,9 @@ const userRouter = require('./routes/userRoute');
 const reviewRoute = require('./routes/reviewRoute')
 
 const app = express();
+
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname,'views'))
 
 // 1) GLOBAL MIDDLEWARES
 // set security HTTP headers
@@ -58,7 +62,7 @@ app.use(
 );
 
 //serving static files
-app.use(express.static(`${__dirname}/public`));
+app.use(express.static(path.join(__dirname,'public')));
 
 // test middleware
 app.use((req, res, next) => {
@@ -67,6 +71,13 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES
+
+app.use('/',(req,res) =>{
+  res.status(200).render('base',{
+    tour:'the park comper',
+    user:'rushi'
+  })
+})
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews',reviewRoute)
