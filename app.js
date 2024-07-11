@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoute');
 const userRouter = require('./routes/userRoute');
 const reviewRoute = require('./routes/reviewRoute')
+const viewRoute = require('./routes/viewRoute')
 
 const app = express();
 
@@ -72,12 +73,8 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 
-app.use('/',(req,res) =>{
-  res.status(200).render('base',{
-    tour:'the park comper',
-    user:'rushi'
-  })
-})
+
+app.use('/',viewRoute)
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/reviews',reviewRoute)
